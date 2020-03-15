@@ -1,0 +1,57 @@
+---
+- name: Setup HashiCorp Vault
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+
+    - name: Install utilities need for install, wget and uznip
+      dnf:
+        name:
+        - unzip
+      state: latest
+
+    - name: Get the HC Vault zip file
+      get_url:
+        url: https://releases.hashicorp.com/vault/1.3.2/vault_1.3.2_linux_amd64.zip
+        dest: /tmp/vault_1.3.2_linux_amd64.zip
+
+    - name: Unzip and place the vault binary in /usr/local/bin
+      unarchive:
+        src: //tmp/vault_1.3.2_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: yes
+
+    - name: Fix SELinux permissions
+      shell: restorecon -rv /usr/local/bin/vault
+
+    - name: Enable vault autocomplte
+      shell: /usr/local/bin/vault -autocomplete-install
+
+    - name: Add vault user and create storage direcotry
+      shell: |
+        useradd -r -d /etc/vault.d -m -s /bin/false vault
+        useradd -r -d /etc/vault.d -m -s /bin/false vault
+        chown -R vault:vault /opt/vault/
+
+    - name: Create SystemD service file
+      template:
+        src: templates/vault.servicve.j2
+        dest: /etc/systemd/system/vault.service
+
+    - name: Create Vault Config file.  Puts your IPv4 address as a listener
+      template:
+        src: templates/config.hcl.j2
+        dest: /etc/vault.d/config.hcl
+
+    - name: Enable and start vault
+      shell: |
+        systemctl daemon-reload
+        systemctl enable --now vault
+
+    - name: Allow Vault through firewall
+      shell: |
+        firewall-cmd --zone=public --permanent --add-port 8200/tcp
+        firewall-cmd --zone=public --permanent --add-port 8201/tcp
+        firewall-cmd –reload
+
