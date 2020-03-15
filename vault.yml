@@ -5,7 +5,7 @@
   become: true
   tasks:
 
-    - name: Install utilities need for install, wget and uznip
+    - name: Install utilities need for install uznip
       dnf:
         name: unzip
         state: latest
@@ -53,4 +53,6 @@
         firewall-cmd --zone=public --permanent --add-port 8200/tcp
         firewall-cmd --zone=public --permanent --add-port 8201/tcp
         firewall-cmd --reload
+
+    - name: init vault and save the file in /etc/vault.d/
 
