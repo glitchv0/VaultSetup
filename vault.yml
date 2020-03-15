@@ -52,5 +52,5 @@
       shell: |
         firewall-cmd --zone=public --permanent --add-port 8200/tcp
         firewall-cmd --zone=public --permanent --add-port 8201/tcp
-        firewall-cmd –reload
+        firewall-cmd --reload
 
