@@ -6,9 +6,9 @@
   tasks:
 
     - name: Install utilities need for install, wget and uznip
-      yum:
-        - unzip
-      state: latest
+      dnf:
+        name: unzip
+        state: latest
 
     - name: Get the HC Vault zip file
       get_url:
