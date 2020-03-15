@@ -54,5 +54,5 @@
         firewall-cmd --zone=public --permanent --add-port 8201/tcp
         firewall-cmd --reload
 
-    - name: init vault and save the file in /etc/vault.d/
+    # - name: init vault and save the file in /etc/vault.d/
 
