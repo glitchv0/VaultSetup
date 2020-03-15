@@ -1,0 +1,10 @@
+vault-unseal.service
+[Unit]
+Description=Vault Auto Unseal
+After=vault.service
+
+[Service]
+ExecStart=/usr/local/sbin/unseal.sh
+
+[Install]
+WantedBy=multi-user.target
