@@ -6,7 +6,7 @@
   tasks:
 
     - name: Install utilities need for install, wget and uznip
-      dnf:
+      yum:
         - unzip
       state: latest
 
