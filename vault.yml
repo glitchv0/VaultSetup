@@ -30,7 +30,7 @@
     - name: Add vault user and create storage direcotry
       shell: |
         useradd -r -d /etc/vault.d -m -s /bin/false vault
-        useradd -r -d /etc/vault.d -m -s /bin/false vault
+        mkdir -p /opt/vault/data
         chown -R vault:vault /opt/vault/
 
     - name: Create SystemD service file
